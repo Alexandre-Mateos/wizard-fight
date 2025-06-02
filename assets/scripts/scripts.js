@@ -1,48 +1,58 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
 let wizardName1 = document.querySelector(`#wizardName1`);
-let wizardName2 = document.querySelector (`#wizardName2`);
-
+let wizardName2 = document.querySelector(`#wizardName2`);
 
 /*
-Tableau qui stocke les infos de mes sorciers:
+Objet qui stocke les infos de mes sorciers:
 [vie restante, force de la dernière attaque]
 */
-let wizard1 = [200 , 0];
-let wizard2 = [200 , 0];
+let wizard1 = {
+  life: 200,
+  attackPower: 0,
+};
+let wizard2 = {
+  life: 200,
+  attackPower: 0,
+};
 
+form.addEventListener("submit", (e) => {
+  //permet d'arreter la soumission du formulaire
+  e.preventDefault();
 
-form.addEventListener('submit', (e) => {
+  // c'est là que ça démarre
+  let compteurTour = 1;
+  // je récupère le nom des sorciers et les stock dans les objets
+  wizard1.name = wizardName1.value;
+  wizard2.name = wizardName2.value;
 
-    //permet d'arreter la soumission du formulaire
-    e.preventDefault();
-
-    // c'est là que ça démarre
-    let compteurTour = 1;
-
-    // je stocke la force de l'attaque et la vie restante pour chacun de mes sorciers
-    
-
-    while (wizard1[0] > 0 && wizard2[0] > 0){
-        if (compteurTour%2 === 0){
-        attack(wizard1, wizard2);
-
-        }else{
-        attack(wizard2, wizard1);
-        }
-        compteurTour ++;
+  // boucle de jeu
+  while (wizard1.life > 0 && wizard2.life > 0) {
+    if (compteurTour % 2 === 0) {
+      attack(wizard1, wizard2);
+      recordFight(compteurTour, wizard1, wizard2);
+    } else {
+      attack(wizard2, wizard1);
+      recordFight(compteurTour, wizard2, wizard1);
     }
-})
+    compteurTour++;
+  }
+});
 
 /*
 fonction qui génère la valeur de l'attaque à chaque tour. Cette
 valeur un entier dans l'intervalle [5 ; 15]
 */
-function attack (wizardAttacking, wizardDefending, min = 5, max = 15){
-    wizardAttacking[1] = Math.floor(Math.random() * (max-min+1) + min);
-    wizardDefending[0] -= wizardAttacking[1];
+function attack(wizardAttacking, wizardDefending, min = 5, max = 15) {
+  wizardAttacking.attackPower = Math.floor(
+    Math.random() * (max - min + 1) + min);
+  wizardDefending.life -= wizardAttacking.attackPower;
 }
-function recordFight (tour, wizardAttacking, wizardDefending){
-    let paraFight = document.createElement("p");
-    paraFight.innerHTML = `Tour ${tour} : ${wizardAttacking} attaque ${wizardDefending} for ${damage} dégâts. Il reste ${life}`
+/*
+fonction qui affiche les tours du combat
+*/
+function recordFight(tour, wizardAttacking, wizardDefending) {
+  let paraFight = document.createElement("p");
+  paraFight.innerHTML = `Tour ${tour} : ${wizardAttacking.name} attaque ${wizardDefending.name} pour ${wizardAttacking.attackPower} dégâts. Il reste ${wizardDefending.life} PV à ${wizardDefending.name}`;
+  fightRecord.insertAdjacentElement("beforeend", paraFight);
 }
