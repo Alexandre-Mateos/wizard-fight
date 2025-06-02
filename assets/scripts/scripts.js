@@ -10,6 +10,7 @@ form.addEventListener('submit', (e) => {
 
     //permet d'arreter la soumission du formulaire
     e.preventDefault();
+
     // c'est là que ça démarre
     let compteurTour = 1;
 
@@ -25,7 +26,6 @@ form.addEventListener('submit', (e) => {
         }
         compteurTour ++;
     }
-    
 })
 
 /*
@@ -38,6 +38,6 @@ function attack (min = 5, max = 16){
 }
 function fightDisplay(tour, firstWizardName, secondWizardName, force, life){
     let paraFightRecord = document.createElement("p");
-    paraFightRecord.innerHTML = `Tour ${tour} : ${firstWizardName} attaque ${secondWizardName} pour ${force} dégâts. Il reste ${life} à ${secondWizardName}`;
+    paraFightRecord.innerHTML = `Tour ${tour} : ${firstWizardName} attaque ${secondWizardName} pour ${force} dégâts. Il reste ${life} PV à ${secondWizardName}`;
     fightRecord.insertAdjacentElement("beforeend", paraFightRecord);
 }
