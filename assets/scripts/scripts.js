@@ -16,14 +16,11 @@ form.addEventListener('submit', (e) => {
 
     while (lifeWizard1 > 0 && lifeWizard2 > 0){
         if (compteurTour%2 === 0){
-            let damage = attack();
-            lifeWizard2 -= damage;
-            fightDisplay(compteurTour, wizardName1.value, wizardName2.value, damage, lifeWizard2);
+            
         }else{
-            let damage = attack();
-            lifeWizard1 -= damage;
-            fightDisplay(compteurTour, wizardName2.value, wizardName1.value, damage, lifeWizard1);
+            
         }
+
         compteurTour ++;
     }
 })
@@ -34,10 +31,5 @@ valeur un entier dans l'intervalle [5 ; 16[
 */
 function attack (min = 5, max = 16){
     let attackForce = Math.floor(Math.random() * (max-min) + min);
-    return attackForce
-}
-function fightDisplay(tour, firstWizardName, secondWizardName, force, life){
-    let paraFightRecord = document.createElement("p");
-    paraFightRecord.innerHTML = `Tour ${tour} : ${firstWizardName} attaque ${secondWizardName} pour ${force} dégâts. Il reste ${life} PV à ${secondWizardName}`;
-    fightRecord.insertAdjacentElement("beforeend", paraFightRecord);
+    return lifeWizard2
 }
