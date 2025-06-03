@@ -48,7 +48,12 @@ valeur un entier dans l'intervalle [5 ; 15]
 function attack(wizardAttacking, wizardDefending, min = 5, max = 15) {
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min);
-  wizardDefending.life -= wizardAttacking.attackPower;
+  
+  if (wizardDefending.life - wizardAttacking.attackPower <= 0){
+    wizardDefending.life = 0;
+  }else{
+    wizardDefending.life -= wizardAttacking.attackPower;
+  }
 }
 /*
 fonction qui affiche les tours du combat
