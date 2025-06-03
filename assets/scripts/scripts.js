@@ -68,29 +68,29 @@ form.addEventListener("submit", (e) => {
 fonction qui génère la valeur de l'attaque à chaque tour. Cette
 valeur un entier dans l'intervalle [5 ; 15]
 */
-function damage(wizardAttacking, wizardDefending, min = 5, max = 15) {
-
-  
+function damage(wizardAttacking, wizardDefending, min = 5, max = 15, criticalfactor = 0.1) {
+/*
+calcul des dommages de base
+ */
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min
   );
-
-  let criticalHit = Math.floor (Math.random()*(100) +1);
-  if (criticalHit < 5 || criticalHit > 95){
+  /*
+  Calcul des dommages de coups critique
+  permet les coups critique en multipliant la force  de base par 3;
+  */
+  let criticalHit = Math.random();
+  if (criticalHit < criticalfactor){
+    wizardAttacking.attackPower = wizardAttacking.attackPower*3;
     console.log("c'est un coup critique");
-    wizardDefending.life -= wizardAttacking.attackPower * 3;
-  }else{
+  }
+
+  if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
+    wizardDefending.life = 0;
+  } else {
     wizardDefending.life -= wizardAttacking.attackPower;
   }
 
-  // wizardAttacking.attackPower = Math.floor(
-  //   Math.random() * (max - min + 1) + min
-  // );
-  // if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
-  //   wizardDefending.life = 0;
-  // } else {
-  //   wizardDefending.life -= wizardAttacking.attackPower;
-  // }
 }
 /*
 fonction qui affiche les tours du combat
