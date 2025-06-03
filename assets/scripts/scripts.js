@@ -1,7 +1,6 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
 
-
 let lifeBarWizard1 = document.querySelector(`#lifeBar1`);
 let lifeBarWizard2 = document.querySelector(`#lifeBar2`);
 
@@ -25,11 +24,11 @@ Objet qui stocke les infos de mes sorciers:
 */
 let wizard1 = {
   life: 200,
-  comeBack: false
+  comeBack: false,
 };
 let wizard2 = {
   life: 200,
-  comeBack: false
+  comeBack: false,
 };
 
 form.addEventListener("submit", (e) => {
@@ -54,46 +53,53 @@ form.addEventListener("submit", (e) => {
   duelistHouse2.innerHTML = wizard2.house;
   duelistLife2.innerHTML = wizard2.life;
 
-  lifeBarWizard2.classList.remove("hidden");
   lifeBarWizard1.classList.remove("hidden");
+  lifeBarWizard2.classList.remove("hidden");
 
   // boucle de jeu
   let compteurTour = 1;
   let criticalFactor;
-  
-  let fightLoop = setInterval(() => {
 
+  /*
+  la fonction setInterval(fonction, intervale) appelle une fonction
+  après avoir attendu l'intervale indiqué. Ne s'arrète qu'avec
+  l'instruction clearInterval(). Sinon s'éxécute indéfiniment.
+  doit etre appelé dans une variable pour être utilisable comme ça.
+   */
+  let fightLoop = setInterval(() => {
     criticalFactor = Math.random();
 
     if (compteurTour % 2 === 0) {
       theComeBack(compteurTour, wizard1);
       damage(wizard1, wizard2, criticalFactor);
       fight(compteurTour, wizard1, wizard2, criticalFactor);
-      
     } else {
       theComeBack(compteurTour, wizard2);
       damage(wizard2, wizard1, criticalFactor);
       fight(compteurTour, wizard2, wizard1, criticalFactor);
-           
     }
-    lifeBarWizard1.value = wizard1.life;
-    lifeBarWizard2.value = wizard2.life;
+    barLife(wizard1, wizard2);
     if (wizard1.life <= 0 || wizard2.life <= 0) {
       clearInterval(fightLoop);
       theWinnerIs(wizard1, wizard2, compteurTour);
-      lifeBarWizard1.value = wizard1.life;
-      lifeBarWizard2.value = wizard2.life;
+      barLife(wizard1, wizard2);
     }
     compteurTour++;
   }, 300);
-
 });
 
 /*
 fonction qui génère la valeur de l'attaque à chaque tour. Cette
 valeur un entier dans l'intervalle [5 ; 15]
 */
-function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, factor = 0.1) {
+function damage(
+  wizardAttacking,
+  wizardDefending,
+  critical,
+  min = 5,
+  max = 15,
+  factor = 0.1
+) {
   /*
   calcul des dommages de base. MAth.random() renvois une valeur aléatoire
   entre 0 et 1. Math.floor arrondi à l'entier inférieur. 
@@ -105,8 +111,8 @@ function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, f
   Calcul des dommages de coups critique
   permet les coups critique en multipliant la force  de base par 3;
   */
-  if (critical < factor){
-    wizardAttacking.attackPower = wizardAttacking.attackPower*3;
+  if (critical < factor) {
+    wizardAttacking.attackPower = wizardAttacking.attackPower * 3;
   }
 
   /*
@@ -129,11 +135,11 @@ fonction Math.random().
 function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   let paraFight = document.createElement("p");
   paraFight.innerHTML = `Tour ${tour} : ${wizardAttacking.name} attaque ${wizardDefending.name} pour ${wizardAttacking.attackPower} dégâts. Il reste ${wizardDefending.life} PV à ${wizardDefending.name}`;
-  if(critical < factor){
+  if (critical < factor) {
     paraFight.classList.add("criticalStyle");
   }
   fightRecord.insertAdjacentElement("afterbegin", paraFight);
-  
+
   // mise à jour des points de vie dans l'objet
   duelistLife1.innerHTML = wizard1.life;
   duelistLife2.innerHTML = wizard2.life;
@@ -143,8 +149,8 @@ function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
 fonction qui rend toute la vie au sorcier lorsque ses PV < 100.
 Ne s'exécute qu'une fois grâce au boléen.
 */
-function theComeBack (tour, wizard){
-  if (wizard.life <= 100 && !wizard.comeBack){
+function theComeBack(tour, wizard) {
+  if (wizard.life <= 100 && !wizard.comeBack) {
     wizard.life = 200;
     wizard.comeBack = true;
 
@@ -158,13 +164,17 @@ function theComeBack (tour, wizard){
 /*
 Affichage du message de victoire final
 */
-function theWinnerIs(wizard1, wizard2, tour){
+function theWinnerIs(wizard1, wizard2, tour) {
   let winMessage = document.createElement("p");
-  if (wizard1.life === 0){
+  if (wizard1.life === 0) {
     winMessage.innerHTML = `${wizard1.name} s'est fait détruire par ${wizard2.name} en ${tour} tour`;
-  }else if (wizard2.life === 0){
-     winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name} en ${tour} tour`;
+  } else if (wizard2.life === 0) {
+    winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name} en ${tour} tour`;
   }
   fightRecord.insertAdjacentElement("beforebegin", winMessage);
 }
 
+function barLife(wizard1, wizard2) {
+  lifeBarWizard1.value = wizard1.life;
+  lifeBarWizard2.value = wizard2.life;
+}
