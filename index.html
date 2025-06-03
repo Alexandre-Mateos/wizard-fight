@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="assets/scripts/scripts.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Duel de Sorciers</h1>
     <form id="formulaire">
-        <div>
-            <label for="wizardName1">Nom du sorcier 1</label>
-            <input type="text" id="wizardName1">
-            <label for="maison1">Maison du sorcier 1</label>
-            <select name="maisons" id="maison1">
-                <option value="">--Choisissez une maison--</option>
-                <option value="Gryffondor">Gryffondor</option>
-                <option value="Poufsouffle">Poufsouffle</option>
-                <option value="Serdaigle">Serdaigle</option>
-                <option value="Serpentard">Serpentard</option>
-            </select>
-        </div>
-        <div>
-            <label for="wizardName2">Nom du sorcier 2</label>
-            <input type="text" id="wizardName2">
-            <label for="maison2">Maison du sorcier 2</label>
-            <select name="maisons" id="maison2">
-                <option value="">--Choisissez une maison--</option>
-                <option value="Gryffondor">Gryffondor</option>
-                <option value="Poufsouffle">Poufsouffle</option>
-                <option value="Serdaigle">Serdaigle</option>
-                <option value="Serpentard">Serpentard</option>
-            </select>
-        </div>
-        <button type="submit">Lancer le duel</button>
+      <div>
+        <label for="wizardName1">Nom du sorcier 1</label>
+        <input type="text" id="wizardName1" />
+        <label for="maison1">Maison du sorcier 1</label>
+        <select name="maisons" id="maison1">
+          <option value="">--Choisissez une maison--</option>
+          <option value="Gryffondor">Gryffondor</option>
+          <option value="Poufsouffle">Poufsouffle</option>
+          <option value="Serdaigle">Serdaigle</option>
+          <option value="Serpentard">Serpentard</option>
+        </select>
+      </div>
+      <div>
+        <label for="wizardName2">Nom du sorcier 2</label>
+        <input type="text" id="wizardName2" />
+        <label for="maison2">Maison du sorcier 2</label>
+        <select name="maisons" id="maison2">
+          <option value="">--Choisissez une maison--</option>
+          <option value="Gryffondor">Gryffondor</option>
+          <option value="Poufsouffle">Poufsouffle</option>
+          <option value="Serdaigle">Serdaigle</option>
+          <option value="Serpentard">Serpentard</option>
+        </select>
+      </div>
+      <button type="submit">Lancer le duel</button>
     </form>
+    <div id="duelist1"></div>
+    <div id="duelist2"></div>
     <div id="historique"></div>
-</body>
+  </body>
 </html>

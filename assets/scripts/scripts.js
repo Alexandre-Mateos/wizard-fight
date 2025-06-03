@@ -1,5 +1,7 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
+let duelist1 = document.querySelector(`#duelist1`);
+let duelist2 = document.querySelector(`#duelist2`);
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
 let wizardHouse1 = document.querySelector(`#maison1`);
@@ -7,7 +9,7 @@ let wizardHouse2 = document.querySelector(`#maison2`);
 
 /*
 Objet qui stocke les infos de mes sorciers:
-[vie restante, force de la dernière attaque]
+[nom, maison, vie restante, force]
 */
 let wizard1 = {
   life: 200,
@@ -22,11 +24,16 @@ form.addEventListener("submit", (e) => {
 
   // c'est là que ça démarre
   let compteurTour = 1;
-  // je récupère le nom des sorciers et les stock dans les objets
+  /* récupère le nom des sorciers et leur maison et les stock
+  dans les objets wizards 1 et wozard 2*/
   wizard1.name = wizardName1.value;
   wizard2.name = wizardName2.value;
   wizard1.house = wizardHouse1.value;
   wizard2.house = wizardHouse2.value;
+
+  // Affichage des duelist
+  displayWizard(wizard1);
+  displayWizard(wizard2);
 
   // boucle de jeu
   while (wizard1.life > 0 && wizard2.life > 0) {
@@ -62,4 +69,24 @@ function recordFight(tour, wizardAttacking, wizardDefending) {
   let paraFight = document.createElement("p");
   paraFight.innerHTML = `Tour ${tour} : ${wizardAttacking.name} attaque ${wizardDefending.name} pour ${wizardAttacking.attackPower} dégâts. Il reste ${wizardDefending.life} PV à ${wizardDefending.name}`;
   fightRecord.insertAdjacentElement("beforeend", paraFight);
+}
+
+function displayWizard (wizard){
+  let paraNameWizard = document.createElement("p");
+  let paraHouseWizard = document.createElement("p");
+  let paraLife = document.createElement("p");
+
+  paraNameWizard.innerHTML = wizard.name;
+  paraHouseWizard.innerHTML = wizard.house;
+  paraLife.innerHTML = wizard.life;
+
+  if(wizard1){
+    duelist1.insertAdjacentElement("beforeend", paraNameWizard);
+    duelist1.insertAdjacentElement("beforeend", paraHouseWizard);
+    duelist1.insertAdjacentElement("beforeend", paraLife);
+  }else{
+    duelist2.insertAdjacentElement("beforeend", paraNameWizard);
+    duelist2.insertAdjacentElement("beforeend", paraHouseWizard);
+    duelist2.insertAdjacentElement("beforeend", paraLife);
+  }
 }
