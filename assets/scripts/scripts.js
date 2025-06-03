@@ -20,9 +20,11 @@ Objet qui stocke les infos de mes sorciers:
 */
 let wizard1 = {
   life: 200,
+  comeBack: false
 };
 let wizard2 = {
   life: 200,
+  comeBack: false
 };
 
 form.addEventListener("submit", (e) => {
@@ -32,7 +34,7 @@ form.addEventListener("submit", (e) => {
   // c'est là que ça démarre
 
   /* récupère le nom des sorciers et leur maison et les stock
-  dans les objets wizards 1 et wozard 2*/
+  dans les objets wizards 1 et wizard 2*/
   wizard1.name = wizardName1.value;
   wizard2.name = wizardName2.value;
   wizard1.house = wizardHouse1.value;
@@ -49,29 +51,38 @@ form.addEventListener("submit", (e) => {
 
   // boucle de jeu
   let compteurTour = 1;
+  let criticalFactor;
+  
   let fightLoop = setInterval(() => {
+
+    criticalFactor = Math.random();
+
     if (compteurTour % 2 === 0) {
-      damage(wizard1, wizard2);
-      fight(compteurTour, wizard1, wizard2);
+      theComeBack(compteurTour, wizard1);
+      damage(wizard1, wizard2, criticalFactor);
+      fight(compteurTour, wizard1, wizard2, criticalFactor);
     } else {
-      damage(wizard2, wizard1);
-      fight(compteurTour, wizard2, wizard1);
+      theComeBack(compteurTour, wizard2);
+      damage(wizard2, wizard1, criticalFactor);
+      fight(compteurTour, wizard2, wizard1, criticalFactor);
     }
+
     if (wizard1.life <= 0 || wizard2.life <= 0) {
       clearInterval(fightLoop);
     }
     compteurTour++;
   }, 300);
+
 });
 
 /*
 fonction qui génère la valeur de l'attaque à chaque tour. Cette
 valeur un entier dans l'intervalle [5 ; 15]
 */
-function damage(wizardAttacking, wizardDefending, min = 5, max = 15, criticalfactor = 0.1) {
-/*
-calcul des dommages de base
- */
+function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, factor = 0.1) {
+  /*
+  calcul des dommages de base
+  */
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min
   );
@@ -79,10 +90,10 @@ calcul des dommages de base
   Calcul des dommages de coups critique
   permet les coups critique en multipliant la force  de base par 3;
   */
-  let criticalHit = Math.random();
-  if (criticalHit < criticalfactor){
+ 
+  if (critical < factor){
     wizardAttacking.attackPower = wizardAttacking.attackPower*3;
-    console.log("c'est un coup critique");
+    console.log("coup critique");
   }
 
   if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
@@ -90,15 +101,32 @@ calcul des dommages de base
   } else {
     wizardDefending.life -= wizardAttacking.attackPower;
   }
-
 }
+
 /*
 fonction qui affiche les tours du combat
 */
-function fight(tour, wizardAttacking, wizardDefending) {
+function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   let paraFight = document.createElement("p");
   paraFight.innerHTML = `Tour ${tour} : ${wizardAttacking.name} attaque ${wizardDefending.name} pour ${wizardAttacking.attackPower} dégâts. Il reste ${wizardDefending.life} PV à ${wizardDefending.name}`;
+  if(critical < factor){
+    paraFight.classList.add("criticalStyle");
+  }
   fightRecord.insertAdjacentElement("beforeend", paraFight);
+  
+  // mise à jour des points de vie
   duelistLife1.innerHTML = wizard1.life;
   duelistLife2.innerHTML = wizard2.life;
+}
+
+function theComeBack (tour, wizard){
+  if (wizard.life <= 100 && !wizard.comeBack){
+    wizard.life = 200;
+    wizard.comeBack = true;
+
+    let paraFight = document.createElement("p");
+    paraFight.innerHTML = `Tour ${tour} : ${wizard.name} va chercher des ressources cachées et récupère tout ses PV`;
+    paraFight.classList.add("healthStyle");
+    fightRecord.insertAdjacentElement("beforeend", paraFight);
+  }
 }

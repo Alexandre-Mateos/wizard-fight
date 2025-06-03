@@ -3,3 +3,9 @@
     flex-direction: row;
     gap: 3rem;
 }
+.criticalStyle{
+    color: red;
+}
+.healthStyle{
+    color: rgb(6, 177, 6);
+}
