@@ -2,6 +2,8 @@ let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
+let wizardHouse1 = document.querySelector(`#maison1`);
+let wizardHouse2 = document.querySelector(`#maison2`);
 
 /*
 Objet qui stocke les infos de mes sorciers:
@@ -25,6 +27,8 @@ form.addEventListener("submit", (e) => {
   // je récupère le nom des sorciers et les stock dans les objets
   wizard1.name = wizardName1.value;
   wizard2.name = wizardName2.value;
+  wizard1.house = wizardHouse1.value;
+  wizard2.house = wizardHouse2.value;
 
   // boucle de jeu
   while (wizard1.life > 0 && wizard2.life > 0) {
