@@ -1,6 +1,10 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
-let fightResults = document.querySelector(`#fightResults`);
+
+
+let lifeBarWizard1 = document.querySelector(`#lifeBar1`);
+let lifeBarWizard2 = document.querySelector(`#lifeBar2`);
+
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
 let wizardHouse1 = document.querySelector(`#maison1`);
@@ -41,7 +45,7 @@ form.addEventListener("submit", (e) => {
   wizard1.house = wizardHouse1.value;
   wizard2.house = wizardHouse2.value;
 
-  // Affichage des deux sorciers
+  // Affichage des deux sorciers et de la barre de vie
   duelistName1.innerHTML = wizard1.name;
   duelistHouse1.innerHTML = wizard1.house;
   duelistLife1.innerHTML = wizard1.life;
@@ -49,6 +53,9 @@ form.addEventListener("submit", (e) => {
   duelistName2.innerHTML = wizard2.name;
   duelistHouse2.innerHTML = wizard2.house;
   duelistLife2.innerHTML = wizard2.life;
+
+  lifeBarWizard2.classList.remove("hidden");
+  lifeBarWizard1.classList.remove("hidden");
 
   // boucle de jeu
   let compteurTour = 1;
@@ -62,10 +69,12 @@ form.addEventListener("submit", (e) => {
       theComeBack(compteurTour, wizard1);
       damage(wizard1, wizard2, criticalFactor);
       fight(compteurTour, wizard1, wizard2, criticalFactor);
+      lifeBarWizard1.value = wizard1.life;
     } else {
       theComeBack(compteurTour, wizard2);
       damage(wizard2, wizard1, criticalFactor);
       fight(compteurTour, wizard2, wizard1, criticalFactor);
+      lifeBarWizard2.value = wizard2.life;      
     }
 
     if (wizard1.life <= 0 || wizard2.life <= 0) {
@@ -105,7 +114,8 @@ function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, f
 }
 
 /*
-fonction qui affiche les tours du combat
+fonction qui affiche les tours du combat, en précisant les dégats 
+appliqués et le nom des sorciers
 */
 function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   let paraFight = document.createElement("p");
@@ -113,13 +123,17 @@ function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   if(critical < factor){
     paraFight.classList.add("criticalStyle");
   }
-  fightRecord.insertAdjacentElement("beforeend", paraFight);
+  fightRecord.insertAdjacentElement("afterbegin", paraFight);
   
   // mise à jour des points de vie
   duelistLife1.innerHTML = wizard1.life;
   duelistLife2.innerHTML = wizard2.life;
 }
 
+/*
+fonction qui rend toute la vie au sorcier lorsque ses PV < 100.
+Ne s'exécute qu'une fois.
+*/
 function theComeBack (tour, wizard){
   if (wizard.life <= 100 && !wizard.comeBack){
     wizard.life = 200;
@@ -128,10 +142,13 @@ function theComeBack (tour, wizard){
     let paraFight = document.createElement("p");
     paraFight.innerHTML = `Tour ${tour} : ${wizard.name} va chercher des ressources cachées et récupère tout ses PV`;
     paraFight.classList.add("healthStyle");
-    fightRecord.insertAdjacentElement("beforeend", paraFight);
+    fightRecord.insertAdjacentElement("afterbegin", paraFight);
   }
 }
 
+/*
+Affichage du message de victoire final
+*/
 function theWinnerIs(wizard1, wizard2){
   let winMessage = document.createElement("p");
   if (wizard1.life === 0){
@@ -139,5 +156,6 @@ function theWinnerIs(wizard1, wizard2){
   }else if (wizard2.life === 0){
      winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name}`
   }
-  fightResults.insertAdjacentElement("beforeend", winMessage);
+  fightRecord.insertAdjacentElement("before", winMessage);
 }
+
