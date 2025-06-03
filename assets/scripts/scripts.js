@@ -92,7 +92,8 @@ valeur un entier dans l'intervalle [5 ; 15]
 */
 function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, factor = 0.1) {
   /*
-  calcul des dommages de base
+  calcul des dommages de base. MAth.random() renvois une valeur aléatoire
+  entre 0 et 1. Math.floor arrondi à l'entier inférieur. 
   */
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min
@@ -101,11 +102,14 @@ function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, f
   Calcul des dommages de coups critique
   permet les coups critique en multipliant la force  de base par 3;
   */
- 
   if (critical < factor){
     wizardAttacking.attackPower = wizardAttacking.attackPower*3;
   }
 
+  /*
+  vérifie si la vie du sorcier va passer sous les 0. Si oui
+  met la vie à 0, pour éviter un affichage négatif
+  */
   if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
     wizardDefending.life = 0;
   } else {
@@ -115,7 +119,9 @@ function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, f
 
 /*
 fonction qui affiche les tours du combat, en précisant les dégats 
-appliqués et le nom des sorciers
+appliqués et le nom des sorciers. critical < factor (par défaut = 0.1)
+=> applique le coups critique dans 10% des cas. Critical est issus d'une
+fonction Math.random().
 */
 function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   let paraFight = document.createElement("p");
@@ -125,14 +131,14 @@ function fight(tour, wizardAttacking, wizardDefending, critical, factor = 0.1) {
   }
   fightRecord.insertAdjacentElement("afterbegin", paraFight);
   
-  // mise à jour des points de vie
+  // mise à jour des points de vie dans l'objet
   duelistLife1.innerHTML = wizard1.life;
   duelistLife2.innerHTML = wizard2.life;
 }
 
 /*
 fonction qui rend toute la vie au sorcier lorsque ses PV < 100.
-Ne s'exécute qu'une fois.
+Ne s'exécute qu'une fois grâce au boléen.
 */
 function theComeBack (tour, wizard){
   if (wizard.life <= 100 && !wizard.comeBack){
