@@ -69,17 +69,20 @@ form.addEventListener("submit", (e) => {
       theComeBack(compteurTour, wizard1);
       damage(wizard1, wizard2, criticalFactor);
       fight(compteurTour, wizard1, wizard2, criticalFactor);
-      lifeBarWizard1.value = wizard1.life;
+      
     } else {
       theComeBack(compteurTour, wizard2);
       damage(wizard2, wizard1, criticalFactor);
       fight(compteurTour, wizard2, wizard1, criticalFactor);
-      lifeBarWizard2.value = wizard2.life;      
+           
     }
-
+    lifeBarWizard1.value = wizard1.life;
+    lifeBarWizard2.value = wizard2.life;
     if (wizard1.life <= 0 || wizard2.life <= 0) {
       clearInterval(fightLoop);
-      theWinnerIs(wizard1, wizard2);
+      theWinnerIs(wizard1, wizard2, compteurTour);
+      lifeBarWizard1.value = wizard1.life;
+      lifeBarWizard2.value = wizard2.life;
     }
     compteurTour++;
   }, 300);
@@ -155,13 +158,13 @@ function theComeBack (tour, wizard){
 /*
 Affichage du message de victoire final
 */
-function theWinnerIs(wizard1, wizard2){
+function theWinnerIs(wizard1, wizard2, tour){
   let winMessage = document.createElement("p");
   if (wizard1.life === 0){
-    winMessage.innerHTML = `${wizard1.name} s'est fait détruire par ${wizard2.name}`
+    winMessage.innerHTML = `${wizard1.name} s'est fait détruire par ${wizard2.name} en ${tour} tour`;
   }else if (wizard2.life === 0){
-     winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name}`
+     winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name} en ${tour} tour`;
   }
-  fightRecord.insertAdjacentElement("before", winMessage);
+  fightRecord.insertAdjacentElement("beforebegin", winMessage);
 }
 
