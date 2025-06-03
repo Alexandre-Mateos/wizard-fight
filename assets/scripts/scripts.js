@@ -11,11 +11,9 @@ Objet qui stocke les infos de mes sorciers:
 */
 let wizard1 = {
   life: 200,
-  attackPower: 0,
 };
 let wizard2 = {
   life: 200,
-  attackPower: 0,
 };
 
 form.addEventListener("submit", (e) => {
