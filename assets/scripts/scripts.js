@@ -46,17 +46,15 @@ form.addEventListener("submit", (e) => {
   duelistName2.innerHTML = wizard2.name;
   duelistHouse2.innerHTML = wizard2.house;
   duelistLife2.innerHTML = wizard2.life;
- 
-  
 
   // boucle de jeu
   let compteurTour = 1;
   let fightLoop = setInterval(() => {
     if (compteurTour % 2 === 0) {
-      attack(wizard1, wizard2);
+      damage(wizard1, wizard2);
       fight(compteurTour, wizard1, wizard2);
     } else {
-      attack(wizard2, wizard1);
+      damage(wizard2, wizard1);
       fight(compteurTour, wizard2, wizard1);
     }
     if (wizard1.life <= 0 || wizard2.life <= 0) {
@@ -70,15 +68,29 @@ form.addEventListener("submit", (e) => {
 fonction qui génère la valeur de l'attaque à chaque tour. Cette
 valeur un entier dans l'intervalle [5 ; 15]
 */
-function attack(wizardAttacking, wizardDefending, min = 5, max = 15) {
+function damage(wizardAttacking, wizardDefending, min = 5, max = 15) {
+
+  
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min
   );
-  if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
-    wizardDefending.life = 0;
-  } else {
+
+  let criticalHit = Math.floor (Math.random()*(100) +1);
+  if (criticalHit < 5 || criticalHit > 95){
+    console.log("c'est un coup critique");
+    wizardDefending.life -= wizardAttacking.attackPower * 3;
+  }else{
     wizardDefending.life -= wizardAttacking.attackPower;
   }
+
+  // wizardAttacking.attackPower = Math.floor(
+  //   Math.random() * (max - min + 1) + min
+  // );
+  // if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
+  //   wizardDefending.life = 0;
+  // } else {
+  //   wizardDefending.life -= wizardAttacking.attackPower;
+  // }
 }
 /*
 fonction qui affiche les tours du combat
@@ -90,5 +102,3 @@ function fight(tour, wizardAttacking, wizardDefending) {
   duelistLife1.innerHTML = wizard1.life;
   duelistLife2.innerHTML = wizard2.life;
 }
-
-
