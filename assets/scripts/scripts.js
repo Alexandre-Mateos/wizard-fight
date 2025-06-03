@@ -1,5 +1,6 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
+let fightResults = document.querySelector(`#fightResults`);
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
 let wizardHouse1 = document.querySelector(`#maison1`);
@@ -69,6 +70,7 @@ form.addEventListener("submit", (e) => {
 
     if (wizard1.life <= 0 || wizard2.life <= 0) {
       clearInterval(fightLoop);
+      theWinnerIs(wizard1, wizard2);
     }
     compteurTour++;
   }, 300);
@@ -93,7 +95,6 @@ function damage(wizardAttacking, wizardDefending, critical, min = 5, max = 15, f
  
   if (critical < factor){
     wizardAttacking.attackPower = wizardAttacking.attackPower*3;
-    console.log("coup critique");
   }
 
   if (wizardDefending.life - wizardAttacking.attackPower <= 0) {
@@ -129,4 +130,14 @@ function theComeBack (tour, wizard){
     paraFight.classList.add("healthStyle");
     fightRecord.insertAdjacentElement("beforeend", paraFight);
   }
+}
+
+function theWinnerIs(wizard1, wizard2){
+  let winMessage = document.createElement("p");
+  if (wizard1.life === 0){
+    winMessage.innerHTML = `${wizard1.name} s'est fait détruire par ${wizard2.name}`
+  }else if (wizard2.life === 0){
+     winMessage.innerHTML = `${wizard2.name} s'est fait détruire par ${wizard1.name}`
+  }
+  fightResults.insertAdjacentElement("beforeend", winMessage);
 }
