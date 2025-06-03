@@ -1,7 +1,5 @@
 let form = document.querySelector(`#formulaire`);
 let fightRecord = document.querySelector(`#historique`);
-let duelist1 = document.querySelector(`#duelist1`);
-let duelist2 = document.querySelector(`#duelist2`);
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
 let wizardHouse1 = document.querySelector(`#maison1`);
@@ -31,9 +29,7 @@ form.addEventListener("submit", (e) => {
   wizard1.house = wizardHouse1.value;
   wizard2.house = wizardHouse2.value;
 
-  // Affichage des duelist
-  displayWizard(wizard1);
-  displayWizard(wizard2);
+ 
 
   // boucle de jeu
   while (wizard1.life > 0 && wizard2.life > 0) {
@@ -55,7 +51,6 @@ valeur un entier dans l'intervalle [5 ; 15]
 function attack(wizardAttacking, wizardDefending, min = 5, max = 15) {
   wizardAttacking.attackPower = Math.floor(
     Math.random() * (max - min + 1) + min);
-  
   if (wizardDefending.life - wizardAttacking.attackPower <= 0){
     wizardDefending.life = 0;
   }else{
@@ -71,22 +66,5 @@ function recordFight(tour, wizardAttacking, wizardDefending) {
   fightRecord.insertAdjacentElement("beforeend", paraFight);
 }
 
-function displayWizard (wizard){
-  let paraNameWizard = document.createElement("p");
-  let paraHouseWizard = document.createElement("p");
-  let paraLife = document.createElement("p");
 
-  paraNameWizard.innerHTML = wizard.name;
-  paraHouseWizard.innerHTML = wizard.house;
-  paraLife.innerHTML = wizard.life;
 
-  if(wizard1){
-    duelist1.insertAdjacentElement("beforeend", paraNameWizard);
-    duelist1.insertAdjacentElement("beforeend", paraHouseWizard);
-    duelist1.insertAdjacentElement("beforeend", paraLife);
-  }else{
-    duelist2.insertAdjacentElement("beforeend", paraNameWizard);
-    duelist2.insertAdjacentElement("beforeend", paraHouseWizard);
-    duelist2.insertAdjacentElement("beforeend", paraLife);
-  }
-}
