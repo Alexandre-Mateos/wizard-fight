@@ -1,9 +1,14 @@
+// récupère le formulaire, pour gérer l'évenement submit
 let form = document.querySelector(`#formulaire`);
+
+// récupère la zone d'affichage d'historique des coups
 let fightRecord = document.querySelector(`#historique`);
 
+// mes barres de vie affichées grâce à la balise <progress>
 let lifeBarWizard1 = document.querySelector(`#lifeBar1`);
 let lifeBarWizard2 = document.querySelector(`#lifeBar2`);
 
+// élément du formulaire
 let wizardName1 = document.querySelector(`#wizardName1`);
 let wizardName2 = document.querySelector(`#wizardName2`);
 let wizardHouse1 = document.querySelector(`#maison1`);
@@ -30,6 +35,8 @@ let wizard2 = {
   life: 200,
   comeBack: false,
 };
+
+// Se déclenche quand le formulaire est submit
 
 form.addEventListener("submit", (e) => {
   //permet d'arreter la soumission du formulaire
@@ -73,6 +80,7 @@ form.addEventListener("submit", (e) => {
       theComeBack(compteurTour, wizard1);
       damage(wizard1, wizard2, criticalFactor);
       fight(compteurTour, wizard1, wizard2, criticalFactor);
+      
     } else {
       theComeBack(compteurTour, wizard2);
       damage(wizard2, wizard1, criticalFactor);
